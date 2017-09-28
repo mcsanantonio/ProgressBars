@@ -1,170 +1,43 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-    <meta charset='utf-8' />
-    <title>Progress Bar</title>
-    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <style>
-        body {
-            font-family: "Arial", sans-serif;
-        }
-        
-        .bar {
-            fill: #eee;
-        }
-        
-        .over {
-          fill: red;
-        }
+    <head>
+        <title>Progress Bars by Camille San Antonio</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="stylesheets/styles.css" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="stylesheets/ie9.css" /><![endif]-->
+        <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>        
+        <section id="one" class="wrapper special">
+            <div class="inner">
+                <header class="major">
+                    <h2>Progress Bars</h2>
+                </header>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fa fa-diamond"></i>
+                        <h3>Ohai there!</h3>
+                        <p>Click on the buttons below to manipulate the progress bars.</p>
+                        
+                        <hr />
 
-        .axis {
-            font-size: 13px;
-        }
-        
-        .axis path,
-        .axis line {
-            fill: none;
-            display: none;
-        }
-        
-        .label {
-            font-size: 13px;
-            z-index: 99;
-        }
-
-        #btn-container { text-align: center;}
-    </style>
-
-</head>
-
-<body>
-
-    <div id="graphic">
-        <div id="btn-container">
-            <select name="barName" id="barName">
-                <option>bar 1</option>
-                <option>bar 2</option>
-                <option>bar 3</option>
-            </select>
-            <input type='button' value='10' onclick='incrementBar(this)'/>
-            <input type='button' value='-10' onclick='incrementBar(this)'/>
-        </div>
-    </div>
-    
-    <script>
-        var i = 0;
-        var percent;
-
-        var endpoint = {"buttons":[47,32,-36,-6],"bars":[39,83,40],"limit":190};
-        var data = endpoint.bars.reverse();
-
-        data = data.reverse();
-        // optional values
-        var margin = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-        };
-
-        var width = 960 - margin.left - margin.right,
-            height = 300 - margin.top - margin.bottom;
-
-        var svg = d3.select("#graphic").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        var x = d3.scale.linear()
-            .range([0, width])
-            .domain([0, d3.max(data, function (d) {
-                //return endpoint.limit; // max of 100
-                return 100;
-            })]);
-
-        var y = d3.scale.ordinal()
-            .rangeRoundBands([height, 0], .1)
-            .domain(data.map(function (d) {
-                return d;
-            }));
-
-        updateBars(0); // call initially
-
-        function updateBars(i) {
-
-          var bars = svg.selectAll(".bar")
-              .data(data)
-              .enter()
-              .append("g");
-
-          //append rects - iterates the number of items
-          bars.append("rect")
-              .attr("class", function(d) {
-                var name = "bar";
-
-                if (d.value >= 100)
-                  name = "over";
-
-                return name;
-              })
-              .attr("y", function (d) {
-                  return y(d);
-              })
-              .attr("height", y.rangeBand())
-              .attr("x", 0)
-              .attr("width", function (d,i) {
-                percent = d;
-
-                if (percent < 0) 
-                  d = 0;
-
-                return x(d); // put button value inside the parenthesis
-              });
-
-
-          bars.append("text")
-              .attr("class", "label")
-              //y position of the label is halfway down the bar
-              .attr("y", function (d) {
-                  return y(d) + y.rangeBand() / 2 + 4;
-              })
-              //x position is the center of the svg container
-              .attr("x", function (d) {
-                  return width / 2;
-              })
-              .text(function (d) {
-                  if (d < 0)
-                    d = 0;
-
-                  return d + "%";
-              });
-
-        }
-        
-        function update(i) {
-            var bar = document.getElementById("barName");
-            var selectedValue = bar.length - bar.selectedIndex - 1;
-
-            d3.select("svg").remove();
-
-            svg = d3.select("#graphic").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            data[selectedValue] = data[selectedValue] + parseInt(i);
-
-            updateBars(i);
-        }
-
-        function incrementBar(objButton){  
-            var increment = objButton.value;
-            update(increment);
-        }
-    </script>
-
-</body>
-
+                        <div id="graphic">
+                            <div class="row 200%">
+                                <div class="6u 12u$(medium)">
+                                    <div id="dropdown-container"></div>
+                                </div>
+                                <div class="6u 12u$(medium)">
+                                    <div id="btn-container"></div>
+                                </div>
+                                </hr >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="js/scripts.min.js"></script>
+    </body>
 </html>
